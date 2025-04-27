@@ -2,6 +2,9 @@ import React, { useState, useMemo } from 'react';
 import axios from 'axios';
 import Timetable from './Timetable'; // Timetable 컴포넌트를 import하세요.
 
+// API 주소를 환경변수로 관리
+const API_URL = process.env.REACT_APP_API_URL || 'https://my-fastapi-backend-0yks.onrender.com';
+
 function AdminPanel({ onRefresh }) {
   const [teacher, setTeacher] = useState("");
   const [teacherSubject, setTeacherSubject] = useState("");
@@ -55,13 +58,13 @@ function AdminPanel({ onRefresh }) {
       return;
     }
     try {
-      await axios.delete(`https://my-fastapi-backend-0yks.onrender.com/teachers/${id}`);
-      axios.get('https://my-fastapi-backend-0yks.onrender.com/teachers/').then(res => setTeachers(res.data));
+      await axios.delete(`${API_URL}/teachers/${id}`);
+      axios.get(`${API_URL}/teachers/`).then(res => setTeachers(res.data));
       onRefresh && onRefresh();
     } catch (e) {
       if (e.response?.status === 404) {
         alert('해당 선생님이 존재하지 않습니다. 목록을 새로고침합니다.');
-        axios.get('https://my-fastapi-backend-0yks.onrender.com/teachers/').then(res => setTeachers(res.data));
+        axios.get(`${API_URL}/teachers/`).then(res => setTeachers(res.data));
       } else {
         alert(e.response?.data?.detail || '선생님 삭제 중 오류 발생');
       }
@@ -73,13 +76,13 @@ function AdminPanel({ onRefresh }) {
       return;
     }
     try {
-      await axios.delete(`https://my-fastapi-backend-0yks.onrender.com/rooms/${id}`);
-      axios.get('https://my-fastapi-backend-0yks.onrender.com/rooms/').then(res => setRooms(res.data));
+      await axios.delete(`${API_URL}/rooms/${id}`);
+      axios.get(`${API_URL}/rooms/`).then(res => setRooms(res.data));
       onRefresh && onRefresh();
     } catch (e) {
       if (e.response?.status === 404) {
         alert('해당 공간이 존재하지 않습니다. 목록을 새로고침합니다.');
-        axios.get('https://my-fastapi-backend-0yks.onrender.com/rooms/').then(res => setRooms(res.data));
+        axios.get(`${API_URL}/rooms/`).then(res => setRooms(res.data));
       } else {
         alert(e.response?.data?.detail || '공간 삭제 중 오류 발생');
       }
@@ -91,13 +94,13 @@ function AdminPanel({ onRefresh }) {
       return;
     }
     try {
-      await axios.delete(`https://my-fastapi-backend-0yks.onrender.com/students/${id}`);
-      axios.get('https://my-fastapi-backend-0yks.onrender.com/students/').then(res => setStudents(res.data));
+      await axios.delete(`${API_URL}/students/${id}`);
+      axios.get(`${API_URL}/students/`).then(res => setStudents(res.data));
       onRefresh && onRefresh();
     } catch (e) {
       if (e.response?.status === 404) {
         alert('해당 학생이 존재하지 않습니다. 목록을 새로고침합니다.');
-        axios.get('https://my-fastapi-backend-0yks.onrender.com/students/').then(res => setStudents(res.data));
+        axios.get(`${API_URL}/students/`).then(res => setStudents(res.data));
       } else {
         alert(e.response?.data?.detail || '학생 삭제 중 오류 발생');
       }
@@ -105,10 +108,10 @@ function AdminPanel({ onRefresh }) {
   };
 
   React.useEffect(() => {
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/teachers/').then(res => setTeachers(res.data));
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/rooms/').then(res => setRooms(res.data));
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/students/').then(res => setStudents(res.data));
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/schedules/').then(res => setSchedules(res.data)); // schedules 데이터 가져오기
+    axios.get(`${API_URL}/teachers/`).then(res => setTeachers(res.data));
+    axios.get(`${API_URL}/rooms/`).then(res => setRooms(res.data));
+    axios.get(`${API_URL}/students/`).then(res => setStudents(res.data));
+    axios.get(`${API_URL}/schedules/`).then(res => setSchedules(res.data)); // schedules 데이터 가져오기
   }, []);
 
   React.useEffect(() => {
@@ -185,29 +188,29 @@ function AdminPanel({ onRefresh }) {
   }, [schedules, selectedStudentId]);
 
   const handleAddTeacher = async () => {
-    await axios.post('https://my-fastapi-backend-0yks.onrender.com/teachers/', { name: teacher, subject: teacherSubject });
+    await axios.post(`${API_URL}/teachers/`, { name: teacher, subject: teacherSubject });
     setTeacher(""); setTeacherSubject("");
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/teachers/').then(res => setTeachers(res.data));
+    axios.get(`${API_URL}/teachers/`).then(res => setTeachers(res.data));
     onRefresh && onRefresh();
   };
   const handleAddRoom = async () => {
-    await axios.post('https://my-fastapi-backend-0yks.onrender.com/rooms/', { name: room });
+    await axios.post(`${API_URL}/rooms/`, { name: room });
     setRoom("");
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/rooms/').then(res => setRooms(res.data));
+    axios.get(`${API_URL}/rooms/`).then(res => setRooms(res.data));
     onRefresh && onRefresh();
   };
   const handleAddStudent = async () => {
-    await axios.post('https://my-fastapi-backend-0yks.onrender.com/students/', { name: student });
+    await axios.post(`${API_URL}/students/`, { name: student });
     setStudent("");
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/students/').then(res => setStudents(res.data));
+    axios.get(`${API_URL}/students/`).then(res => setStudents(res.data));
     onRefresh && onRefresh();
   };
   const handleAddSchedule = async () => {
     try {
-      await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', schedule);
+      await axios.post(`${API_URL}/schedules/`, schedule);
       if (addBulkEdit && schedule.is_regular) {
         // 등록 직후 같은 조건 모두 bulk_update_regular
-        await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/bulk_update_regular/', {
+        await axios.post(`${API_URL}/schedules/bulk_update_regular/`, {
           filter: {
             teacher_id: schedule.teacher_id,
             student_id: schedule.student_id,
@@ -221,7 +224,7 @@ function AdminPanel({ onRefresh }) {
         });
       }
       setSchedule({ ...schedule, start_time: "13:00", end_time: "14:00" });
-      axios.get('https://my-fastapi-backend-0yks.onrender.com/schedules/').then(res => setSchedules(res.data));
+      axios.get(`${API_URL}/schedules/`).then(res => setSchedules(res.data));
       onRefresh && onRefresh();
       alert('스케줄 추가 완료!');
     } catch (e) {
@@ -242,26 +245,26 @@ function AdminPanel({ onRefresh }) {
         let teacherId;
         let tRes = teachers.find(t => t.name === teacherName);
         if (!tRes) {
-          const res = await axios.post('https://my-fastapi-backend-0yks.onrender.com/teachers/', { name: teacherName, subject: teacherSubject });
+          const res = await axios.post(`${API_URL}/teachers/`, { name: teacherName, subject: teacherSubject });
           teacherId = res.data.id;
           teachers.push(res.data);
         } else { teacherId = tRes.id; }
         let roomId;
         let rRes = rooms.find(r => r.name === roomName);
         if (!rRes) {
-          const res = await axios.post('https://my-fastapi-backend-0yks.onrender.com/rooms/', { name: roomName });
+          const res = await axios.post(`${API_URL}/rooms/`, { name: roomName });
           roomId = res.data.id;
           rooms.push(res.data);
         } else { roomId = rRes.id; }
         let studentId;
         let sRes = students.find(s => s.name === studentName);
         if (!sRes) {
-          const res = await axios.post('https://my-fastapi-backend-0yks.onrender.com/students/', { name: studentName });
+          const res = await axios.post(`${API_URL}/students/`, { name: studentName });
           studentId = res.data.id;
           students.push(res.data);
         } else { studentId = sRes.id; }
         // 기본시간표 체크시 반복스케줄 자동 일괄수정: 등록 직후 bulk_update_regular 호출
-        let scheduleRes = await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', {
+        let scheduleRes = await axios.post(`${API_URL}/schedules/`, {
           teacher_id: teacherId,
           room_id: roomId,
           student_id: studentId,
@@ -273,7 +276,7 @@ function AdminPanel({ onRefresh }) {
         });
         if (bulkIsRegular) {
           // 등록 직후 같은 조건 모두 bulk_update_regular
-          await axios.put('https://my-fastapi-backend-0yks.onrender.com/schedules/bulk_update_regular/', {
+          await axios.put(`${API_URL}/schedules/bulk_update_regular/`, {
             filter: {
               teacher_id: teacherId,
               student_id: studentId,
@@ -301,13 +304,13 @@ function AdminPanel({ onRefresh }) {
       }
     }
     setBulkResult(`${success}개 성공, ${fail}개 실패` + (failLines.length ? `\n${failLines.join('\n')}` : ""));
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/schedules/').then(res => setSchedules(res.data));
+    axios.get(`${API_URL}/schedules/`).then(res => setSchedules(res.data));
     onRefresh && onRefresh();
   };
 
   // 단체수업 추가 후 스케줄 강제 새로고침 (학생별 스케줄 반영)
   const refreshSchedules = async () => {
-    await axios.get('https://my-fastapi-backend-0yks.onrender.com/schedules/').then(res => setSchedules(res.data));
+    await axios.get(`${API_URL}/schedules/`).then(res => setSchedules(res.data));
     onRefresh && onRefresh();
   };
 
@@ -321,7 +324,7 @@ function AdminPanel({ onRefresh }) {
     for (let name of names) {
       let sRes = students.find(s => s.name === name);
       if (!sRes) {
-        const res = await axios.post('https://my-fastapi-backend-0yks.onrender.com/students/', { name });
+        const res = await axios.post(`${API_URL}/students/`, { name });
         ids.push(res.data.id);
         students.push(res.data);
       } else { ids.push(sRes.id); }
@@ -332,7 +335,7 @@ function AdminPanel({ onRefresh }) {
         alert("모든 항목을 입력해주세요."); return;
       }
       for (let sid of ids) {
-        await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', {
+        await axios.post(`${API_URL}/schedules/`, {
           teacher_id: groupSchedule.teacher_id,
           room_id: groupSchedule.room_id,
           student_id: sid,
@@ -346,7 +349,7 @@ function AdminPanel({ onRefresh }) {
       }
       if (groupBulkEdit && groupSchedule.is_regular) {
         // 등록 직후 같은 조건 모두 bulk_update_regular
-        await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/bulk_update_regular/', {
+        await axios.post(`${API_URL}/schedules/bulk_update_regular/`, {
           filter: {
             teacher_id: groupSchedule.teacher_id,
             room_id: groupSchedule.room_id,

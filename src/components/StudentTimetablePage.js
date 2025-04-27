@@ -2,6 +2,9 @@ import React, { useEffect, useState, useMemo } from 'react';
 import Timetable from './Timetable';
 import axios from 'axios';
 
+// API 주소를 환경변수로 관리
+const API_URL = process.env.REACT_APP_API_URL || 'https://my-fastapi-backend-0yks.onrender.com';
+
 function StudentTimetablePage() {
   const [students, setStudents] = useState([]);
   const [schedules, setSchedules] = useState([]);
@@ -9,8 +12,8 @@ function StudentTimetablePage() {
   const [selectedStudentId, setSelectedStudentId] = useState("");
 
   useEffect(() => {
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/students/').then(res => setStudents(res.data));
-    axios.get('https://my-fastapi-backend-0yks.onrender.com/schedules/').then(res => setSchedules(res.data));
+    axios.get(`${API_URL}/students/`).then(res => setStudents(res.data));
+    axios.get(`${API_URL}/schedules/`).then(res => setSchedules(res.data));
   }, []);
 
   // 1개 이상 수업 듣는 학생만
