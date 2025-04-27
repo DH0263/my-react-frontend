@@ -1,0 +1,33 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f8fafc;
+}
+
+h1 {
+  color: #2d3748;
+}
+
+select, button {
+  font-size: 1rem;
+  padding: 4px 10px;
+  margin-right: 8px;
+}
+
+button {
+  background: #4e73df;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button[disabled] {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.react-big-calendar {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 10px;
+}
