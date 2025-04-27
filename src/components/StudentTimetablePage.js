@@ -9,8 +9,8 @@ function StudentTimetablePage() {
   const [selectedStudentId, setSelectedStudentId] = useState("");
 
   useEffect(() => {
-    axios.get('http://localhost:8000/students/').then(res => setStudents(res.data));
-    axios.get('http://localhost:8000/schedules/').then(res => setSchedules(res.data));
+    axios.get('https://my-fastapi-backend-0yks.onrender.com/students/').then(res => setStudents(res.data));
+    axios.get('https://my-fastapi-backend-0yks.onrender.com/schedules/').then(res => setSchedules(res.data));
   }, []);
 
   // 1개 이상 수업 듣는 학생만

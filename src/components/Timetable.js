@@ -113,7 +113,7 @@ function Timetable({ schedules, onRefresh, teacherId, roomId }) {
       const yyyy = date.getFullYear();
       const mm = String(date.getMonth()+1).padStart(2,'0');
       const dd = String(date.getDate()).padStart(2,'0');
-      await axios.post('http://localhost:8000/schedules/', {
+      await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', {
         ...form,
         is_regular: 0,
         change_type: '보강',
@@ -131,14 +131,14 @@ function Timetable({ schedules, onRefresh, teacherId, roomId }) {
       const yyyy = date.getFullYear();
       const mm = String(date.getMonth()+1).padStart(2,'0');
       const dd = String(date.getDate()).padStart(2,'0');
-      await axios.post('http://localhost:8000/schedules/', {
+      await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', {
         ...form,
         is_regular: 0,
         change_type: '변경',
         date: `${yyyy}-${mm}-${dd}`
       });
     } else {
-      await axios.post('http://localhost:8000/schedules/', form);
+      await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', form);
     }
     setAddModalOpen(false);
     if (onRefresh) onRefresh();
@@ -150,7 +150,7 @@ function Timetable({ schedules, onRefresh, teacherId, roomId }) {
     if (form.change_type === '취소' || isCancel) {
       // 특별일정(취소)로 추가
       const date = form.date || sch.date || new Date().toISOString().slice(0,10);
-      await axios.post('http://localhost:8000/schedules/', {
+      await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', {
         ...sch,
         change_type: '취소',
         is_regular: 0,
@@ -159,14 +159,14 @@ function Timetable({ schedules, onRefresh, teacherId, roomId }) {
     } else if (form.change_type === '변경') {
       // 해당 주 특별일정(변경)로 추가
       const date = form.date || sch.date || new Date().toISOString().slice(0,10);
-      await axios.post('http://localhost:8000/schedules/', {
+      await axios.post('https://my-fastapi-backend-0yks.onrender.com/schedules/', {
         ...form,
         is_regular: 0,
         change_type: '변경',
         date,
       });
     } else {
-      await axios.patch(`http://localhost:8000/schedules/${sch.id}`, form);
+      await axios.patch(`https://my-fastapi-backend-0yks.onrender.com/schedules/${sch.id}`, form);
     }
     setModalOpen(false);
     setSelectedEvent(null);
@@ -175,7 +175,7 @@ function Timetable({ schedules, onRefresh, teacherId, roomId }) {
 
   async function handleDelete() {
     if (!selectedEvent) return;
-    await axios.delete(`http://localhost:8000/schedules/${selectedEvent.resource.id}`);
+    await axios.delete(`https://my-fastapi-backend-0yks.onrender.com/schedules/${selectedEvent.resource.id}`);
     setModalOpen(false);
     setSelectedEvent(null);
     if (onRefresh) onRefresh();
